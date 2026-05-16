@@ -111,6 +111,18 @@
       </section>
 
       <section class="proof-section" aria-labelledby="proof-title">
+        <style>
+          .proof-source { margin-top: 12px; padding-top: 10px; border-top: 0.5px solid rgba(255,255,255,0.08); font-size: 11px; opacity: 0.55; letter-spacing: 0.02em; }
+          .voice-card-inner { position: relative; min-height: 130px; }
+          .voice-quote { position: absolute; top: 0; left: 0; right: 0; opacity: 0; transition: opacity 0.7s ease; pointer-events: none; }
+          .voice-quote.active { opacity: 1; pointer-events: auto; position: relative; }
+          .voice-text { font-size: 18px; line-height: 1.55; font-weight: 500; margin-bottom: 8px; letter-spacing: 0.01em; }
+          .voice-sub { font-size: 13px; line-height: 1.6; opacity: 0.65; }
+          .voice-dots { display: flex; gap: 7px; margin-top: 16px; }
+          .voice-dots .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.18); transition: background 0.3s, transform 0.3s; cursor: pointer; }
+          .voice-dots .dot.active { background: rgba(255,255,255,0.6); transform: scale(1.2); }
+          .voice-tag { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.5; margin-bottom: 12px; }
+        </style>
         <div class="container proof-grid">
           <div>
             <p class="eyebrow reveal">Why now</p>
@@ -118,22 +130,73 @@
           </div>
           <div class="proof-stack">
             <article class="proof-card card spotlight reveal">
-              <strong>1000万+</strong>
-              <span>中国每年犬猫离世数量估算</span>
-              <p>每一次离别背后，都有一段没有被产品照顾过的长期思念。</p>
+              <strong>千万级</strong>
+              <span>每年，有数以千万的家庭要经历这场告别</span>
+              <p>2023 年中国城镇犬猫总量逾 1.2 亿只，每一次离别背后，都有一段没有被产品照顾过的长期思念。</p>
+              <div class="proof-source">来源：2023-2024 中国宠物行业白皮书</div>
             </article>
             <article class="proof-card card spotlight reveal">
-              <strong>89%</strong>
-              <span>访谈用户曾强烈希望再见到它</span>
-              <p>需求最强烈的窗口，往往发生在离别后的前 0-3 个月。</p>
+              <strong>超过一半</strong>
+              <span>主人在它离开后出现明显的身心反应</span>
+              <p>需求最强烈的窗口往往发生在离别后的前 0-3 个月，悲伤程度与亲人离世相当。</p>
+              <div class="proof-source">来源：美国心理学会（APA）宠物丧失研究</div>
             </article>
-            <article class="proof-card card spotlight reveal">
-              <strong>67%</strong>
-              <span>愿意为数字纪念服务付费</span>
-              <p>用户不是在购买一个功能，而是在为“被理解”付费。</p>
+            <article class="proof-card card spotlight reveal" id="voiceCard">
+              <div class="voice-tag">来自真实用户</div>
+              <div class="voice-card-inner" id="voiceInner">
+                <div class="voice-quote active" data-index="0">
+                  <div class="voice-text">"好想再看它一眼，哪怕就一眼"</div>
+                  <div class="voice-sub">它走了之后，我才知道原来每天都在看它。</div>
+                </div>
+                <div class="voice-quote" data-index="1">
+                  <div class="voice-text">"每次回家开门，还是会习惯性地等它跑过来"</div>
+                  <div class="voice-sub">那个跑来蹭我腿的声音，我一直忘不掉。</div>
+                </div>
+                <div class="voice-quote" data-index="2">
+                  <div class="voice-text">"它走了 47 天了，我还是没删掉它的照片"</div>
+                  <div class="voice-sub">相册里全是它，每一张都舍不得动。</div>
+                </div>
+                <div class="voice-quote" data-index="3">
+                  <div class="voice-text">"好想再跟它说一次话，告诉它我有多爱它"</div>
+                  <div class="voice-sub">当时以为还有时间，后来才知道那就是最后一次。</div>
+                </div>
+              </div>
+              <div class="voice-dots" id="voiceDots">
+                <div class="dot active" data-target="0"></div>
+                <div class="dot" data-target="1"></div>
+                <div class="dot" data-target="2"></div>
+                <div class="dot" data-target="3"></div>
+              </div>
             </article>
           </div>
         </div>
+        <script>
+          (function() {
+            var current = 0;
+            var total = 4;
+            var quotes = document.querySelectorAll('#voiceInner .voice-quote');
+            var dots = document.querySelectorAll('#voiceDots .dot');
+            var timer = null;
+            function goTo(index) {
+              quotes[current].classList.remove('active');
+              dots[current].classList.remove('active');
+              current = index;
+              quotes[current].classList.add('active');
+              dots[current].classList.add('active');
+            }
+            function start() {
+              timer = setInterval(function() { goTo((current + 1) % total); }, 3800);
+            }
+            dots.forEach(function(dot) {
+              dot.addEventListener('click', function() {
+                clearInterval(timer);
+                goTo(parseInt(this.getAttribute('data-target'), 10));
+                start();
+              });
+            });
+            start();
+          })();
+        </script>
       </section>
 
       <section class="archive-section" id="archive" aria-labelledby="archive-title">
@@ -234,8 +297,8 @@
             <article class="journey-scene card">
               <span class="scene-index">04</span>
               <h3>在极难的时候，递来真正的支持</h3>
-              <p>当系统识别到长期高强度悲伤，会以非强制方式展示互助社群和专业资源入口，让选择权仍然在你手里。</p>
-              <a class="support-chip" href="#safety">查看哀愈支持资源</a>
+              <p>当系统识别到长期高强度悲伤，它会以宠物的方式自然收束这次陪伴，并提供专业心理支持资源。第二天，它会主动来看看你。</p>
+              <a class="support-chip" href="#safety">了解情绪安全机制</a>
             </article>
           </div>
         </div>
@@ -297,8 +360,8 @@
               <p>从主人描述中提炼专属角色设定，并允许后续补充更新。</p>
             </article>
             <article class="feature-card card spotlight span-4 reveal">
-              <h3>声音克隆</h3>
-              <p>上传叫声片段，生成克制使用的专属声音回应。</p>
+              <h3>声音留存</h3>
+              <p>从主人上传的视频音频中裁取它的声音片段，作为纪念珍藏。</p>
             </article>
             <article class="feature-card card spotlight span-4 reveal">
               <h3>安全引导</h3>
@@ -370,12 +433,12 @@
     <footer class="footer">
       <div class="container footer-inner">
         <p>永在 · PetForever</p>
-        <p>Motion effects derived from <a class="link" href="https://github.com/DavidHDev/vue-bits">vue-bits</a> by DavidHDev (MIT).</p>
-      </div>
+        <p>Motion effects derived from <a class="link" href="https://github.com/DavidHDev/vue-bits">vue-bits</a> by DavidHDev (MIT).</p><p>；运动效果源自<；一个class="；链接"； href="https://github.com/DavidHDev/vue-bits">vue-bits</   & lt;a>；作者：DavidHDev （MIT）。</   & lt;p>；
+      </   & lt;div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="script.js"></script>
   </body>
-</html>
+        </html>
